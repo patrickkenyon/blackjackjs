@@ -64,19 +64,19 @@ var totalScoreP2 = totalScore(card3, card4)
 console.log(totalScoreP1)
 console.log(totalScoreP2)
 
-document.querySelector('.p1card1').innerHTML = 'p1s first card is ' + card1['cardname']
-document.querySelector('.player2').innerHTML = totalScoreP2 + ' from a ' + card3['cardname'] + ' and a ' + card4['cardname']
-document.querySelector('.finalscore').innerHTML = scoreCompare(totalScoreP1, totalScoreP2)
+document.querySelector('.p1card1').innerHTML = 'p1s first card is a ' + card1['cardname'] + ' it has a value of ' + card1['value']
+document.querySelector('.p1card2').innerHTML = 'p1s second card is a ' + card2['cardname'] + ' it has a value of ' + card2['value']
+document.querySelector('.p1score').innerHTML = 'p1s total score is ' + totalScoreP1
+document.querySelector('.p2card1').innerHTML = 'p2s first card is a ' + card3['cardname'] + ' it has a value of ' + card3['value']
+document.querySelector('.p2card2').innerHTML = 'p2s second card is a ' + card4['cardname'] + ' it has a value of ' + card4['value']
+document.querySelector('.p2score').innerHTML = 'p2s total score is ' + totalScoreP2
+document.querySelector('.result').innerHTML = scoreCompare(totalScoreP1, totalScoreP2)
 
 console.log(scoreCompare(totalScoreP1, totalScoreP2))
 
 document.querySelector('.p1draw').addEventListener('click', function(){
     drawCard(deck)
 })
-
-
-
-// document.body.innerHTML = card1['cardname'] + ' ' + value + '\n' + randCard2 + ' ' + value2
 
 function drawCard(deck) {
     var randCard = Object.keys(deck)[Math.floor(Math.random()*Object.keys(deck).length)]
@@ -89,13 +89,25 @@ function totalScore(card1, card2) {
     return card1['value'] + card2['value']
 }
 
-function scoreCompare(playerOneScore, playerTwoScore) {
+function scoreCompare(player1Score, player2Score) {
     switch(true) {
-        case (playerOneScore > 21) && (playerTwoScore > 21):
+        case (player1Score > 21) && (player2Score > 21):
             return 'both players are bust'
             break
-        case (playerOneScore < 21) && (playerTwoScore < 21):
-            return 'neither player is bust'
+        case (player1Score > 21):
+            return 'player 1 is bust, player 2 wins'
+            break
+        case (player2Score > 21):
+            return 'player 2 is bust, player 1 wins'
+            break
+        case (player1Score > player2Score):
+            return 'player 1 wins'
+            break
+        case (player2Score > player1Score):
+            return 'player 2 wins'
+            break
+        case (player2Score === player1Score):
+            return 'draw'
             break
     }
 }
