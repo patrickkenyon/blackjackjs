@@ -58,52 +58,58 @@ var card2 = drawCard(deck)
 var card3 = drawCard(deck)
 var card4 = drawCard(deck)
 
-var totalScoreP1 = totalScore(card1, card2)
-var totalScoreP2 = totalScore(card3, card4)
+var totalscorep1 = totalScore(card1, card2)
+var totalscorep2 = totalScore(card3, card4)
 
-console.log(totalScoreP1)
-console.log(totalScoreP2)
+console.log(totalscorep1)
+console.log(totalscorep2)
 
-document.querySelector('.p1card1').innerHTML = 'p1s first card is a ' + card1['cardname'] + ' it has a value of ' + card1['value']
-document.querySelector('.p1card2').innerHTML = 'p1s second card is a ' + card2['cardname'] + ' it has a value of ' + card2['value']
-document.querySelector('.p1score').innerHTML = sayTotalScore("Player one's", totalScoreP1)
-document.querySelector('.p2card1').innerHTML = 'p2s first card is a ' + card3['cardname'] + ' it has a value of ' + card3['value']
-document.querySelector('.p2card2').innerHTML = 'p2s second card is a ' + card4['cardname'] + ' it has a value of ' + card4['value']
-document.querySelector('.p2score').innerHTML = 'p2s total score is ' + totalScoreP2
-document.querySelector('.result').innerHTML = scoreCompare(totalScoreP1, totalScoreP2)
-
-console.log(scoreCompare(totalScoreP1, totalScoreP2))
+document.querySelector('.p1card1').innerHTML = 'Player 1s first card is a ' + card1['cardname'] + ' it has a value of ' + card1['value']
+document.querySelector('.p1card2').innerHTML = 'Player 1s second card is a ' + card2['cardname'] + ' it has a value of ' + card2['value']
+document.querySelector('.p1score').innerHTML = sayTotalScore("Player 1's", totalscorep1)
+document.querySelector('.p2card1').innerHTML = 'Player 2s first card is a ' + card3['cardname'] + ' it has a value of ' + card3['value']
+document.querySelector('.p2card2').innerHTML = 'Player 2s second card is a ' + card4['cardname'] + ' it has a value of ' + card4['value']
+document.querySelector('.p2score').innerHTML = sayTotalScore("Player 2's", totalscorep2)
+document.querySelector('.result').innerHTML = scoreCompare(totalscorep1, totalscorep2)
 
 document.querySelector('.p1draw').addEventListener('click', function() {
-    var card = drawCard(deck)
-    var div = document.createElement('div')
-    var curscore = {value: totalScoreP1}
-    totalScoreP1 = totalScore(curscore, card)
-    div.innerHTML = 'p1s new card is a ' + card['cardname'] + ' it has a value of ' + card['value']
-    document.querySelector('.p1score').innerHTML = sayTotalScore("Player one's", totalScoreP1)
-    document.querySelector('.p1').appendChild(div)
-    console.log(totalScoreP1)
+   takeAnotherCard(deck, totalscorep1, "Player 1s ", '.p1score', '.p1')
 })
 
+document.querySelector('.p2draw').addEventListener('click', function() {
+    takeAnotherCard(deck, totalscorep2, "Player 2s ", '.p2score', '.p2')
+})
 
+function takeAnotherCard (deck, playertotalscore, playernumber, scorediv, newcarddiv) {
+    var card = drawCard(deck)
+    var div = document.createElement('div')
+    var curscore = {value: playertotalscore}
+    playertotalscore = totalScore(curscore, card)
+    div.innerHTML = playernumber + ' next card is a ' + card['cardname'] + ' it has a value of ' + card['value']
+    document.querySelector(scorediv).innerHTML = sayTotalScore(playernumber, playertotalscore)
+    document.querySelector(newcarddiv).appendChild(div)
+    totalscorep1 =  parseInt(document.querySelector('.p1score span').textContent)
+    totalscorep2 =  parseInt(document.querySelector('.p2score span').textContent)
+    document.querySelector('.result').innerHTML = scoreCompare(totalscorep1, totalscorep2)
+}
 
 function sayTotalScore (player, totalscore) {
-    return player + ' total score is ' + totalscore
+    return player + ' total score is <span>' + totalscore + '</span>'
 }
 
 function drawCard(deck) {
     var randCard = Object.keys(deck)[Math.floor(Math.random()*Object.keys(deck).length)]
     var value = deck[randCard]
+    if (value === 11) {
+        var btn = document.createElement('button')
+        document.querySelector('.p1').appendChild(btn).textContent = "Change"
+    }
     delete deck[randCard]
     return {'cardname': randCard, 'value': value}
 }
 
 function totalScore(card1, card2) {
     return card1['value'] + card2['value']
-}
-
-function newTotalScore(score, newcard) {
-    return score + newcard['value']
 }
 
 function scoreCompare(player1Score, player2Score) {
