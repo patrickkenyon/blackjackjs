@@ -66,7 +66,7 @@ console.log(totalScoreP2)
 
 document.querySelector('.p1card1').innerHTML = 'p1s first card is a ' + card1['cardname'] + ' it has a value of ' + card1['value']
 document.querySelector('.p1card2').innerHTML = 'p1s second card is a ' + card2['cardname'] + ' it has a value of ' + card2['value']
-document.querySelector('.p1score').innerHTML = 'p1s total score is ' + totalScoreP1
+document.querySelector('.p1score').innerHTML = sayTotalScore("Player one's", totalScoreP1)
 document.querySelector('.p2card1').innerHTML = 'p2s first card is a ' + card3['cardname'] + ' it has a value of ' + card3['value']
 document.querySelector('.p2card2').innerHTML = 'p2s second card is a ' + card4['cardname'] + ' it has a value of ' + card4['value']
 document.querySelector('.p2score').innerHTML = 'p2s total score is ' + totalScoreP2
@@ -74,9 +74,22 @@ document.querySelector('.result').innerHTML = scoreCompare(totalScoreP1, totalSc
 
 console.log(scoreCompare(totalScoreP1, totalScoreP2))
 
-document.querySelector('.p1draw').addEventListener('click', function(){
-    drawCard(deck)
+document.querySelector('.p1draw').addEventListener('click', function() {
+    var card = drawCard(deck)
+    var div = document.createElement('div')
+    var curscore = {value: totalScoreP1}
+    totalScoreP1 = totalScore(curscore, card)
+    div.innerHTML = 'p1s new card is a ' + card['cardname'] + ' it has a value of ' + card['value']
+    document.querySelector('.p1score').innerHTML = sayTotalScore("Player one's", totalScoreP1)
+    document.querySelector('.p1').appendChild(div)
+    console.log(totalScoreP1)
 })
+
+
+
+function sayTotalScore (player, totalscore) {
+    return player + ' total score is ' + totalscore
+}
 
 function drawCard(deck) {
     var randCard = Object.keys(deck)[Math.floor(Math.random()*Object.keys(deck).length)]
@@ -87,6 +100,10 @@ function drawCard(deck) {
 
 function totalScore(card1, card2) {
     return card1['value'] + card2['value']
+}
+
+function newTotalScore(score, newcard) {
+    return score + newcard['value']
 }
 
 function scoreCompare(player1Score, player2Score) {

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<div id="create">
+    <button onClick="createDiv()">Click me!</button>
+</div>
+<div id="getText" style="display: none;">
+    INNERHTML
+</div>
+</body>
+<script>
+    function createDiv() {
+        var div = document.createElement('div');
+        div.innerHTML = document.getElementById('getText').innerHTML;
+        document.body.appendChild(div);
+    }
+</script>
+</html>
