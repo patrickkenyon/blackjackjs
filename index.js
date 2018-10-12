@@ -53,10 +53,10 @@ var deck = {
     'king of clubs': 10,
 }
 
-var card1 = drawCard(deck)
-var card2 = drawCard(deck)
-var card3 = drawCard(deck)
-var card4 = drawCard(deck)
+var card1 = drawCard(deck, '.p1')
+var card2 = drawCard(deck, '.p1')
+var card3 = drawCard(deck, '.p2')
+var card4 = drawCard(deck, '.p2')
 
 var totalscorep1 = totalScore(card1, card2)
 var totalscorep2 = totalScore(card3, card4)
@@ -64,11 +64,15 @@ var totalscorep2 = totalScore(card3, card4)
 console.log(totalscorep1)
 console.log(totalscorep2)
 
-document.querySelector('.p1card1').innerHTML = 'Player 1s first card is a ' + card1['cardname'] + ' it has a value of ' + card1['value']
-document.querySelector('.p1card2').innerHTML = 'Player 1s second card is a ' + card2['cardname'] + ' it has a value of ' + card2['value']
+document.querySelector('.p1card1').innerHTML = 'Player 1s first card is a ' + card1['cardname']
+    + ' it has a value of <span>' + card1['value'] + '</span>'
+document.querySelector('.p1card2').innerHTML = 'Player 1s second card is a ' + card2['cardname']
+    + ' it has a value of <span>' + card2['value'] + '</span>'
 document.querySelector('.p1score').innerHTML = sayTotalScore("Player 1's", totalscorep1)
-document.querySelector('.p2card1').innerHTML = 'Player 2s first card is a ' + card3['cardname'] + ' it has a value of ' + card3['value']
-document.querySelector('.p2card2').innerHTML = 'Player 2s second card is a ' + card4['cardname'] + ' it has a value of ' + card4['value']
+document.querySelector('.p2card1').innerHTML = 'Player 2s first card is a ' + card3['cardname']
+    + ' it has a value of <span>' + card3['value'] + '</span>'
+document.querySelector('.p2card2').innerHTML = 'Player 2s second card is a ' + card4['cardname']
+    + ' it has a value of <span>' + card4['value'] + '</span>'
 document.querySelector('.p2score').innerHTML = sayTotalScore("Player 2's", totalscorep2)
 document.querySelector('.result').innerHTML = scoreCompare(totalscorep1, totalscorep2)
 
@@ -80,12 +84,21 @@ document.querySelector('.p2draw').addEventListener('click', function() {
     takeAnotherCard(deck, totalscorep2, "Player 2s ", '.p2score', '.p2')
 })
 
+document.querySelector('.changeAce').addEventListener('click', function() {
+
+})
+
+function switchAce() {
+    document.querySelector(value).innerHTML = ""
+}
+
 function takeAnotherCard (deck, playertotalscore, playernumber, scorediv, newcarddiv) {
-    var card = drawCard(deck)
+    var card = drawCard(deck, newcarddiv)
     var div = document.createElement('div')
     var curscore = {value: playertotalscore}
     playertotalscore = totalScore(curscore, card)
-    div.innerHTML = playernumber + ' next card is a ' + card['cardname'] + ' it has a value of ' + card['value']
+    div.innerHTML = playernumber + ' next card is a ' + card['cardname'] + ' it has a value of ' + '<span>'
+        + card['value'] + '</span>'
     document.querySelector(scorediv).innerHTML = sayTotalScore(playernumber, playertotalscore)
     document.querySelector(newcarddiv).appendChild(div)
     totalscorep1 =  parseInt(document.querySelector('.p1score span').textContent)
@@ -97,12 +110,13 @@ function sayTotalScore (player, totalscore) {
     return player + ' total score is <span>' + totalscore + '</span>'
 }
 
-function drawCard(deck) {
+function drawCard(deck, newcarddiv) {
     var randCard = Object.keys(deck)[Math.floor(Math.random()*Object.keys(deck).length)]
     var value = deck[randCard]
     if (value === 11) {
         var btn = document.createElement('button')
-        document.querySelector('.p1').appendChild(btn).textContent = "Change"
+        document.querySelector(newcarddiv).appendChild(btn).textContent = "Change"
+        document.querySelector(newcarddiv).appendChild(btn).setAttribute("class", "changeAce")
     }
     delete deck[randCard]
     return {'cardname': randCard, 'value': value}
